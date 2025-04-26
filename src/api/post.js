@@ -15,7 +15,7 @@ async function getPostById(postId) {
   return response.data;
 }
 
-async function updatePost(postId, postData) {
+async function putPost(postId, postData) {
   const response = await apiClient.put(`/posts/${postId}`, postData);
   return response.data;
 }
@@ -25,4 +25,4 @@ async function deletePost(postId) {
   return response.data;
 }
 
-export { getAllPosts, createPost, getPostById, updatePost, deletePost };
+export { getAllPosts, createPost, getPostById, putPost, deletePost };

@@ -1,18 +1,29 @@
 <template>
-  <div
-    class="border border-gray-300 p-4 rounded mb-4 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-    tabindex="0"
-    :aria-label="`Post card for ${post.title}`"
-    role="article"
-  >
-    <h3 class="text-lg font-semibold mb-2">{{ post.title }}</h3>
-    <p class="mb-2 text-gray-700">{{ post.content }}</p>
-    <p class="text-xs text-gray-500">{{ post.created_at }}</p>
-  </div>
+   <Card style="width: 20rem; overflow: hidden; margin: 1rem" @click="handleClick">
+        <template #header>
+            <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
+        </template>
+        <template #title>{{ post.title }}</template>
+        <template #subtitle>{{ post.created_at }}</template>
+        <template #content>
+            <p class="m-0">
+              {{ post.content }}
+            </p>
+        </template>
+        
+    </Card>
 </template>
 
 <script setup lang="ts">
 import { Post } from '../modals';
+import Card from 'primevue/card';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const { post } = defineProps<{ post: Post }>();
+
+const handleClick = () => {
+  router.push(`/reflection/${post.id}`);
+};
 </script>

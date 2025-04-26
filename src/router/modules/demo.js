@@ -5,13 +5,13 @@ export default [
     component: () => import('@/views/HomeView.vue'),
   },
   {
-    path: '/pinia',
-    name: 'pinia',
-    component: () => import('@/views/PiniaView.vue'),
+    path: '/reflection',
+    name: 'reflection',
+    component: () => import('@/views/Reflection.vue'),
   },
   {
-    path: '/add-reflection',
-    name: 'add-reflection',
-    component: () => import('@/views/AddReflection.vue'),
+    path: '/reflection/:id',
+    name: 'reflection-id',
+    component: () => import('@/views/Reflection.vue'),
   },
 ];

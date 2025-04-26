@@ -14,8 +14,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
+  <TheWelcome />
+  <main class="flex items-center justify-center">
     <PostCard v-for="post in posts" :key="post.id" :post="post" />
   </main>
 </template>
+
+<style scoped></style>
