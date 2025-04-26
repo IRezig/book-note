@@ -21,6 +21,13 @@
         :icon="isUpdate ? 'pi pi-pencil' : 'pi pi-save'"
         @click="handleSubmit"
       />
+      <Button
+        v-if="isUpdate"
+        class="w-full text-white mt-4"
+        :label="'Delete'"
+        :icon="'pi pi-trash'"
+        @click="handleDelete"
+      />
     </div>
   </div>
 </template>
@@ -50,6 +57,11 @@ const handleSubmit = async () => {
   } else {
     await postStore.addPost(post.value);
   }
+  router.push('/');
+};
+
+const handleDelete = async () => {
+  await postStore.removePost(id);
   router.push('/');
 };
 
