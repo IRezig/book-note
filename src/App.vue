@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router';
   <nav>
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/add-reflection">Add Reflection</RouterLink>
-    <RouterLink to="/pinia">Pinia</RouterLink>
+    <!-- <RouterLink to="/pinia">Pinia</RouterLink> -->
   </nav>
   <RouterView />
 </template>
