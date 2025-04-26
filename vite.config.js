@@ -6,6 +6,7 @@ import IconsResolver from 'unplugin-icons/resolver';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
+import tailwindcss from '@tailwindcss/vite';
 
 export default ({ mode }) => {
   const { VITE_PORT, VITE_BASE_URL } = loadEnv(mode, process.cwd());
@@ -13,6 +14,7 @@ export default ({ mode }) => {
   return defineConfig({
     base: VITE_BASE_URL,
     plugins: [
+      tailwindcss(),
       vue(),
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia'],

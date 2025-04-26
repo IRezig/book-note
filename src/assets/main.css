@@ -1,3 +1,5 @@
+@tailwind utilities;
+
 @import url('./base.css');
 
 #app {

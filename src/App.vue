@@ -1,18 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue';
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/pinia">Pinia</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+  <nav>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/add-reflection">Add Reflection</RouterLink>
+    <RouterLink to="/pinia">Pinia</RouterLink>
+  </nav>
   <RouterView />
 </template>
 
