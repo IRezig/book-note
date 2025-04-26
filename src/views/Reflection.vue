@@ -29,6 +29,7 @@
         @click="handleDelete"
       />
     </div>
+    <Toast />
   </div>
 </template>
 
@@ -36,11 +37,14 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, InputText } from 'primevue';
+import Toast from 'primevue/toast';
+import { usePostToast } from '@/composables/usePostToast';
 import { usePostStore } from '@/store/modules/post';
 import { Post } from '@/modals';
 
 const postStore = usePostStore();
 const router = useRouter();
+const { showSuccess, showError } = usePostToast();
 
 const { id } = useRoute().params;
 const isUpdate = ref<boolean>(false);
@@ -53,21 +57,40 @@ const post = ref<Post>({
 
 const handleSubmit = async () => {
   if (isUpdate.value) {
-    await postStore.updatePost(id, post.value);
+    await postStore.updatePost(String(id), post.value);
+    if (!postStore.error) {
+      showSuccess('updated');
+      setTimeout(() => router.push('/'), 800);
+      return;
+    } else {
+      showError(postStore.error);
+    }
   } else {
     await postStore.addPost(post.value);
+    if (!postStore.error) {
+      showSuccess('created');
+      setTimeout(() => router.push('/'), 800);
+      return;
+    } else {
+      showError(postStore.error);
+    }
   }
-  router.push('/');
 };
 
 const handleDelete = async () => {
-  await postStore.removePost(id);
-  router.push('/');
+  await postStore.removePost(String(id));
+  if (!postStore.error) {
+    showSuccess('deleted');
+    setTimeout(() => router.push('/'), 800);
+    return;
+  } else {
+    showError(postStore.error);
+  }
 };
 
 const loadPost = async () => {
   if (id) {
-    const existingPost = await postStore.getPost(id);
+    const existingPost = await postStore.getPost(String(id));
     if (existingPost) {
       post.value = existingPost;
       isUpdate.value = true;

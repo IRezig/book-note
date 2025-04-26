@@ -1,12 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
+import Menu from '@/components/Menu.vue';
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/reflection">Add Reflection</RouterLink>
-  </nav>
+  <Menu />
   <RouterView />
 </template>
 

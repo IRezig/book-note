@@ -1,12 +1,14 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import TheWelcome from '@/components/TheWelcome.vue';
 import PostCard from '@/components/PostCard.vue';
 import { usePostStore } from '@/store/modules/post';
+import CreateReflectionCard from '@/components/CreateReflectionCard.vue';
 
 const postStore = usePostStore();
 const { posts } = storeToRefs(postStore);
+
+const validPosts = computed(() => posts.value.filter((post) => post && post.id));
 
 onMounted(() => {
   postStore.loadPosts();
@@ -14,9 +16,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <TheWelcome />
-  <main class="flex items-center justify-center">
-    <PostCard v-for="post in posts" :key="post.id" :post="post" />
+  <main class="flex flex-wrap items-center justify-center gap-4">
+    <CreateReflectionCard />
+    <PostCard v-for="post in validPosts" :key="post.id" :post="post" />
   </main>
 </template>
 
