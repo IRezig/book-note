@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useCounterStore = defineStore('counter', {
-  state: () => ({
-    count: 1,
-  }),
-  actions: {
-    accumulate() {
-      this.count++;
-    },
-  },
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(1);
+
+  const accumulate = () => {
+    count.value++;
+  };
+
+  return { count, accumulate };
 });
