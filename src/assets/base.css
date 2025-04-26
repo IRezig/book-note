@@ -42,7 +42,7 @@
     --color-text: var(--vt-c-text-dark-2);
   }
 }
-
+/* 
 *,
 *::before,
 *::after {
@@ -64,4 +64,4 @@ body {
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */

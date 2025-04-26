@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import '@/assets/main.css';
 
 createApp(App)
   .use(router)

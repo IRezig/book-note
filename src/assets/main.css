@@ -1,5 +1,8 @@
 @tailwind utilities;
 
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+
 @import url('./base.css');
 
 #app {
@@ -9,7 +12,7 @@
   font-weight: normal;
 }
 
-a,
+/* a,
 .green {
   color: hsl(160deg 100% 37% / 100%);
   text-decoration: none;
@@ -33,4 +36,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */
