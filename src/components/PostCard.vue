@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { Posts } from '../modals';
+import { Post } from '../modals';
 
-const { post } = defineProps<{ post: Posts }>();
+const { post } = defineProps<{ post: Post }>();
 </script>

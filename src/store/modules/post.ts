@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getAllPosts, createPost } from '../../api/post';
-import { Posts } from '../../modals';
+import { Post } from '../../modals';
 
 export const usePostStore = defineStore('post', () => {
-  const posts = ref<Posts[]>([]);
+  const posts = ref<Post[]>([]);
 
   const isLoading = ref(false);
   const error = ref(null);
