@@ -3,15 +3,23 @@
     <div class="max-w-3xl mx-auto">
       <h1 class="text-3xl font-bold text-gray-900 mb-8">Daily Coding Reflection</h1>
 
+      <label for="reflection-title" class="block text-gray-700 font-medium mb-1" tabindex="0" aria-label="Title">
+        Title
+      </label>
       <InputText
+        id="reflection-title"
         v-model="post.title"
-        label="Title"
+        placeholder="Give your reflection a title"
         class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
 
-      <InputText
+      <label for="reflection-content" class="block text-gray-700 font-medium mb-1" tabindex="0" aria-label="Content">
+        Content
+      </label>
+      <Textarea
+        id="reflection-content"
         v-model="post.content"
-        label="Content"
+        placeholder="Write your reflection here"
         class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
 
@@ -36,7 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { Button, InputText } from 'primevue';
+import { Button, InputText, Textarea } from 'primevue';
 import Toast from 'primevue/toast';
 import { usePostToast } from '@/composables/usePostToast';
 import { usePostStore } from '@/store/modules/post';

@@ -5,7 +5,7 @@ dayjs.locale('zh-cn');
 
 const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_FORMAT = 'DD.MM.YYYY';
 
 const formatToDateTime = (date, format = DATE_TIME_FORMAT) => {
   return dayjs(date).format(format);

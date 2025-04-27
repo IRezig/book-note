@@ -5,7 +5,7 @@
         </template>
         <template #title>{{ post.title }}</template>
 
-        <template #subtitle>{{ formatDate(post.created_at) }}</template>
+        <template #subtitle>{{ formatToDate(post.created_at) }}</template>
         <template #content>
             <p class="m-0">
               {{ post.content }}
@@ -19,14 +19,7 @@
 import { Reflection } from '../modals';
 import Card from 'primevue/card';
 import { useRouter } from 'vue-router';
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-};
+import { formatToDate } from '../utils/date';
 
 
 const router = useRouter();
