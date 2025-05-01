@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
 import ToastService from 'primevue/toastservice';
 import '@/assets/main.css';
+import 'primeicons/primeicons.css';
 
 createApp(App)
   .use(router)
@@ -13,6 +14,10 @@ createApp(App)
   .use(PrimeVue, {
     theme: {
       preset: Material,
+      options: {
+        order: ['light', 'dark'],
+        darkModeSelector: '.dark',
+      },
     },
   })
   .use(ToastService)

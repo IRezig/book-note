@@ -4,6 +4,8 @@ import Menu from '@/components/Menu.vue';
 </script>
 
 <template>
-  <Menu />
-  <RouterView />
+  <div :class="['min-h-screen transition-colors duration-200']">
+    <Menu />
+    <RouterView />
+  </div>
 </template>
