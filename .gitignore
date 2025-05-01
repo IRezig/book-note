@@ -37,3 +37,20 @@ dist-ssr
 # unplugin
 *.d.ts
 node_modules/
+
+# production
+dist/
+build/
+
+# environment variables
+.env
+.env.*
+
+# test coverage
+coverage/
+
+# local config files
+*.local
+
+# optional: OS or tool-specific
+Thumbs.db
