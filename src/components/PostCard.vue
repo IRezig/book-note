@@ -1,5 +1,5 @@
 <template>
-   <Card class="w-80 h-80 overflow-hidden mt-4" @click="handleClick">
+   <Card class="w-80 h-80 overflow-hidden mt-4 hover:cursor-pointer" @click="handleClick">
         <template #header>
             <img
                 :alt="'user header'"

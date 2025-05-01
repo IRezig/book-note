@@ -2,7 +2,7 @@
 import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import PostCard from '@/components/PostCard.vue';
-import { usePostStore } from '@/store/modules/post';
+import { usePostStore } from '@/store/modules/book';
 import CreateReflectionCard from '@/components/CreateReflectionCard.vue';
 
 const postStore = usePostStore();
