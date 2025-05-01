@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import PrimeVue from 'primevue/config';
-import Aura from '@primeuix/themes/aura';
+import Material from '@primeuix/themes/material';
 import ToastService from 'primevue/toastservice';
 import '@/assets/main.css';
 
@@ -12,7 +12,7 @@ createApp(App)
   .use(store)
   .use(PrimeVue, {
     theme: {
-      preset: Aura,
+      preset: Material,
     },
   })
   .use(ToastService)

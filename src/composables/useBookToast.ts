@@ -1,15 +1,15 @@
 import { useToast } from 'primevue/usetoast';
 
-export type PostAction = 'created' | 'updated' | 'deleted';
+export type BookAction = 'created' | 'updated' | 'deleted';
 
-export const usePostToast = () => {
+export const useBookToast = () => {
   const toast = useToast();
 
-  const showSuccess = (action: PostAction) => {
+  const showSuccess = (action: BookAction) => {
     toast.add({
       severity: 'success',
       summary: 'Success',
-      detail: `Post ${action} successfully`,
+      detail: `Book ${action} successfully`,
       life: 3000,
     });
   };

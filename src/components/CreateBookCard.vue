@@ -26,6 +26,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const handleCreateReflectionClick = () => {
-  router.push('/reflection');
+  router.push('/book');
 };
 </script>

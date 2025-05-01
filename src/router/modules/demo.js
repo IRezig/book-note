@@ -5,13 +5,13 @@ export default [
     component: () => import('@/views/HomeView.vue'),
   },
   {
-    path: '/reflection',
-    name: 'reflection',
-    component: () => import('@/views/Reflection.vue'),
+    path: '/book',
+    name: 'book',
+    component: () => import('@/views/BookView.vue'),
   },
   {
-    path: '/reflection/:id',
-    name: 'reflection-id',
-    component: () => import('@/views/Reflection.vue'),
+    path: '/book/:id',
+    name: 'book-id',
+    component: () => import('@/views/BookView.vue'),
   },
 ];

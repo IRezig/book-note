@@ -8,7 +8,7 @@
       </label>
       <InputText
         id="reflection-title"
-        v-model="post.title"
+        v-model="book.title"
         placeholder="Give your reflection a title"
         class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
@@ -18,7 +18,7 @@
       </label>
       <Textarea
         id="reflection-content"
-        v-model="post.content"
+        v-model="book.content"
         placeholder="Write your reflection here"
         class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
@@ -46,68 +46,69 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, InputText, Textarea } from 'primevue';
 import Toast from 'primevue/toast';
-import { usePostToast } from '@/composables/usePostToast';
-import { usePostStore } from '@/store/modules/post';
-import { Post } from '@/modals';
+import { useBookToast } from '@/composables/useBookToast';
+import { useBookStore } from '@/store/modules/book';
+import { BookT } from '@/modals';
 
-const postStore = usePostStore();
+const bookStore = useBookStore();
 const router = useRouter();
-const { showSuccess, showError } = usePostToast();
+const { showSuccess, showError } = useBookToast();
 
 const { id } = useRoute().params;
 const isUpdate = ref<boolean>(false);
 
-const post = ref<Post>({
+const book = ref<BookT>({
   id: 0,
   title: '',
-  content: '',
+  author: '',
+  description: '',
 });
 
 const handleSubmit = async () => {
   if (isUpdate.value) {
-    await postStore.updatePost(String(id), post.value);
-    if (!postStore.error) {
+    await bookStore.updateBook(String(id), book.value);
+    if (!bookStore.error) {
       showSuccess('updated');
       setTimeout(() => router.push('/'), 800);
       return;
     } else {
-      showError(postStore.error);
+      showError(bookStore.error);
     }
   } else {
-    await postStore.addPost(post.value);
-    if (!postStore.error) {
+    await bookStore.addBook(book.value);
+    if (!bookStore.error) {
       showSuccess('created');
       setTimeout(() => router.push('/'), 800);
       return;
     } else {
-      showError(postStore.error);
+      showError(bookStore.error);
     }
   }
 };
 
 const handleDelete = async () => {
-  await postStore.removePost(String(id));
-  if (!postStore.error) {
+  await bookStore.removeBook(String(id));
+  if (!bookStore.error) {
     showSuccess('deleted');
     setTimeout(() => router.push('/'), 800);
     return;
   } else {
-    showError(postStore.error);
+    showError(bookStore.error);
   }
 };
 
-const loadPost = async () => {
+const loadBook = async () => {
   if (id) {
-    const existingPost = await postStore.getPost(String(id));
-    if (existingPost) {
-      post.value = existingPost;
+    const existingBook = await bookStore.getBook(String(id));
+    if (existingBook) {
+      book.value = existingBook;
       isUpdate.value = true;
     }
   }
 };
 
 onMounted(() => {
-  loadPost();
+  loadBook();
 });
 </script>
 

@@ -16,7 +16,7 @@ const items = ref([
   {
     label: 'Reflection',
     icon: 'pi pi-star',
-    to: '/reflection',
+    to: '/book',
   },
 ]);
 </script>

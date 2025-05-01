@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BookCard: typeof import('./src/components/BookCard.vue')['default']
+    CreateBookCard: typeof import('./src/components/CreateBookCard.vue')['default']
     CreateReflectionCard: typeof import('./src/components/CreateReflectionCard.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']

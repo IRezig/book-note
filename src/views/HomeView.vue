@@ -1,24 +1,24 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import PostCard from '@/components/PostCard.vue';
-import { usePostStore } from '@/store/modules/book';
-import CreateReflectionCard from '@/components/CreateReflectionCard.vue';
+import BookCardCard from '@/components/BookCard.vue';
+import { useBookStore } from '@/store/modules/book';
+import CreateBookCard from '@/components/CreateBookCard.vue';
 
-const postStore = usePostStore();
-const { posts } = storeToRefs(postStore);
+const bookStore = useBookStore();
+const { books } = storeToRefs(bookStore);
 
-const validPosts = computed(() => posts.value.filter((post) => post && post.id));
+const validBooks = computed(() => books.value.filter((book) => book && book.id));
 
 onMounted(() => {
-  postStore.loadPosts();
+  bookStore.loadBooks();
 });
 </script>
 
 <template>
   <main class="flex flex-wrap items-center justify-center gap-4">
-    <CreateReflectionCard />
-    <PostCard v-for="post in validPosts" :key="post.id" :post="post" />
+    <CreateBookCard />
+    <BookCardCard v-for="book in validBooks" :key="book.id" :book="book" />
   </main>
 </template>
 

@@ -1,91 +1,91 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { getAllPosts, createPost, getPostById, putPost, deletePost } from '../../api/post';
-import { Post } from '../../modals';
+import { getAllBooks, createBook, getBookById, putBook, deleteBook } from '../../api/book';
+import { Book } from '../../modals';
 
-export const usePostStore = defineStore('post', () => {
-  const posts = ref<Post[]>([]);
+export const useBookStore = defineStore('book', () => {
+  const books = ref<Book[]>([]);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
-  const loadPosts = async () => {
+  const loadBooks = async () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await getAllPosts();
-      posts.value = response;
+      const response = await getAllBooks();
+      books.value = response;
     } catch (err: any) {
-      error.value = err.message || 'Failed to fetch posts';
+      error.value = err.message || 'Failed to fetch books';
     } finally {
       isLoading.value = false;
     }
   };
 
-  const addPost = async (newPost: Post) => {
+  const addBook = async (newBook: Book) => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await createPost(newPost);
-      posts.value.push(response.data);
+      const response = await createBook(newBook);
+      books.value.push(response.data);
     } catch (err: any) {
-      error.value = err.message || 'Failed to create post';
+      error.value = err.message || 'Failed to create book';
     } finally {
       isLoading.value = false;
     }
   };
 
-  const getPost = async (id: string) => {
+  const getBook = async (id: string) => {
     isLoading.value = true;
     error.value = null;
     try {
-      const post = await getPostById(id);
-      return post;
+      const book = await getBookById(id);
+      return book;
     } catch (err: any) {
-      error.value = err.message || 'Failed to get post';
+      error.value = err.message || 'Failed to get book';
     } finally {
       isLoading.value = false;
     }
   };
 
-  const updatePost = async (id: string, updatedPost: Post) => {
+  const updateBook = async (id: string, updatedBook: Book) => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await putPost(id, updatedPost);
-      const index = posts.value.findIndex((p) => String(p.id) === String(id));
+      const response = await putBook(id, updatedBook);
+      const index = books.value.findIndex((b) => String(b.id) === String(id));
       if (index !== -1) {
-        posts.value[index] = response.data;
+        books.value[index] = response.data;
       }
       return response.data;
     } catch (err: any) {
-      error.value = err.message || 'Failed to update post';
+      error.value = err.message || 'Failed to update book';
     } finally {
       isLoading.value = false;
     }
   };
 
-  const removePost = async (id: string) => {
+  const removeBook = async (id: string) => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await deletePost(id);
-      posts.value = posts.value.filter((post) => String(post.id) !== String(id));
+      const response = await deleteBook(id);
+      books.value = books.value.filter((book) => String(book.id) !== String(id));
       return response.data;
     } catch (err: any) {
-      error.value = err.message || 'Failed to delete post';
+      error.value = err.message || 'Failed to delete book';
     } finally {
       isLoading.value = false;
     }
   };
 
   return {
-    posts,
+    books,
     isLoading,
     error,
-    loadPosts,
-    addPost,
-    getPost,
-    updatePost,
-    removePost,
+    loadBooks,
+    addBook,
+    getBook,
+    updateBook,
+    removeBook,
   };
 });
