@@ -28,7 +28,7 @@ const dialog = useDialog();
 const handleCreateReflectionClick = () => {
   dialog.open(Modal, {
     header: 'Create a new Book',
-    width: '50vw',
+    width: 'w-full',
     modal: true,
   });
 };

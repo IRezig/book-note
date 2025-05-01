@@ -4,7 +4,8 @@
       <template #end>
         <div class="flex items-center gap-2">
           <InputSwitch v-model="isDark" aria-label="Toggle dark mode" />
-          <i :class="['pi', isDark ? 'pi-moon' : 'pi-sun']" />
+          <img v-if="isDark" src="../../public/monkey-sun-glasses.png" alt="Toggle dark mode" class="w-8 h-8" />
+          <img v-else src="../../public/monkey-reading-glasses.png" alt="Toggle dark mode" class="w-8 h-8" />
         </div>
       </template>
     </Menubar>
