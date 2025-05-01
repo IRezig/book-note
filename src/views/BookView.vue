@@ -19,11 +19,11 @@
             />
           </div>
           <div class="mt-6 flex justify-center space-x-3">
-            <Button variant="outline" class="bg-white text-white flex items-center gap-2">
+            <Button variant="outline" class="flex items-center gap-2">
               <i class="pi pi-bookmark mr-2"></i>
-              <span>Save</span>
+              <span>Add a note</span>
             </Button>
-            <Button class="bg-cozy-amber text-white hover:bg-cozy-amber/80 flex items-center gap-2">
+            <Button class="bg-cozy-amber hover:bg-cozy-amber/80 flex items-center gap-2">
               <i class="pi pi-book mr-2"></i>
               <span>Read Now</span>
             </Button>
@@ -39,7 +39,7 @@
               <Tag
                 v-for="genre in book.genre"
                 :key="genre"
-                class="bg-cozy-beige text-cozy-brown border-cozy-brown/30"
+                class="bg-amber-400 text-cozy-brown border-cozy-brown/30"
                 :value="genre"
               />
             </div>
@@ -53,7 +53,7 @@
           </Card>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-cozy-beige/50 p-4 rounded-lg">
+            <div class="bg-amber-400 p-4 rounded-lg">
               <h3 class="font-medium text-cozy-brown mb-2">Details</h3>
               <ul class="space-y-2 text-sm">
                 <li class="flex justify-between">
@@ -75,7 +75,7 @@
               </ul>
             </div>
 
-            <div class="bg-cozy-sage/30 p-4 rounded-lg">
+            <div class="bg-yellow-500 p-4 rounded-lg">
               <div class="flex items-center mb-3">
                 <i class="pi pi-bookmark text-cozy-brown mr-2"></i>
                 <h3 class="font-medium text-cozy-brown">Reader's Notes</h3>

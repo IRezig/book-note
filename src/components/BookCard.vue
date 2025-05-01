@@ -10,10 +10,16 @@
             />
         </template>
         <template #title>{{ book.title }}</template>
-        <template #subtitle>{{ formatToDate(book.created_at) }}</template>
+        <template #subtitle>{{ book.author }}</template>
+        <Tag
+          v-for="genre in book.genre"
+          :key="genre"
+          class="bg-amber-400 text-cozy-brown border-cozy-brown/30"
+          :value="genre"
+        />
         <template #content>
             <p class="m-0">
-              {{ book.content }}
+              {{ book.description }}
             </p>
         </template>
     </Card>
@@ -21,9 +27,8 @@
 
 <script setup lang="ts">
 import { Book } from '../modals';
-import Card from 'primevue/card';
+import { Card, Tag } from 'primevue';
 import { useRouter } from 'vue-router';
-import { formatToDate } from '../utils/date';
 
 const router = useRouter();
 const { book } = defineProps<{ book: Book }>();

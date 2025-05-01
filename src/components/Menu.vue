@@ -3,7 +3,7 @@
     <Menubar :model="items" class="mb-4">
       <template #end>
         <div class="flex items-center gap-2">
-          <InputSwitch v-model="isDark" aria-label="Toggle dark mode" @change="toggleTheme" />
+          <InputSwitch v-model="isDark" aria-label="Toggle dark mode" />
           <i :class="['pi', isDark ? 'pi-moon' : 'pi-sun']" />
         </div>
       </template>
@@ -17,7 +17,7 @@ import Menubar from 'primevue/menubar';
 import InputSwitch from 'primevue/inputswitch';
 import { useTheme } from '@/composables/useTheme';
 
-const { isDark, toggleTheme, initializeTheme } = useTheme();
+const { isDark, initializeTheme } = useTheme();
 
 const items = ref([
   {
@@ -26,9 +26,9 @@ const items = ref([
     to: '/',
   },
   {
-    label: 'Reflection',
-    icon: 'pi pi-star',
-    to: '/book',
+    label: 'Books',
+    icon: 'pi pi-book',
+    to: '/books',
   },
 ]);
 

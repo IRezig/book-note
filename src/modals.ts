@@ -16,6 +16,12 @@ export interface Book {
   title: string;
   author: string;
   description: string;
+  coverImage: string;
+  genre: string[];
+  publisher: string;
+  publicationDate: string;
+  pages: number;
+  isbn: string;
 }
 
 export interface BookT {

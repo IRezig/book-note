@@ -3,13 +3,12 @@ import { ref, watch } from 'vue';
 const isDark = ref(false);
 
 export const useTheme = () => {
-  const toggleTheme = () => {
-    isDark.value = !isDark.value;
-    updateTheme();
-  };
-
   const updateTheme = () => {
     document.documentElement.classList.toggle('dark', isDark.value);
+  };
+
+  const toggleTheme = () => {
+    updateTheme();
   };
 
   // Initialize theme based on system preference
@@ -19,7 +18,7 @@ export const useTheme = () => {
     updateTheme();
   };
 
-  // Watch for system theme changes
+  // Watch for system theme changes and isDark changes
   watch(
     () => window.matchMedia('(prefers-color-scheme: dark)').matches,
     (newValue) => {
@@ -27,6 +26,11 @@ export const useTheme = () => {
       updateTheme();
     },
   );
+
+  // Add a watch for isDark changes
+  watch(isDark, () => {
+    updateTheme();
+  });
 
   return {
     isDark,
