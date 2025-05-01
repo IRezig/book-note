@@ -5,20 +5,24 @@ import store from './store';
 import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
 import ToastService from 'primevue/toastservice';
+import DialogService from 'primevue/dialogservice';
+import DynamicDialog from 'primevue/dynamicdialog';
 import '@/assets/main.css';
 import 'primeicons/primeicons.css';
 
-createApp(App)
-  .use(router)
-  .use(store)
-  .use(PrimeVue, {
-    theme: {
-      preset: Material,
-      options: {
-        order: ['light', 'dark'],
-        darkModeSelector: '.dark',
-      },
+const app = createApp(App);
+app.use(router);
+app.use(store);
+app.use(DialogService);
+app.use(PrimeVue, {
+  theme: {
+    preset: Material,
+    options: {
+      order: ['light', 'dark'],
+      darkModeSelector: '.dark',
     },
-  })
-  .use(ToastService)
-  .mount('#app');
+  },
+});
+app.use(ToastService);
+app.component('DynamicDialog', DynamicDialog);
+app.mount('#app');

@@ -16,16 +16,20 @@
     >
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
     </svg>
-    <span class="text-lg font-semibold text-blue-600">Add a new book</span>
+    <span class="text-lg font-semibold text-blue-600">Add a new Book</span>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import Modal from '@/components/Modal.vue';
+import { useDialog } from 'primevue/usedialog';
+const dialog = useDialog();
 
 const handleCreateReflectionClick = () => {
-  router.push('/book');
+  dialog.open(Modal, {
+    header: 'Create a new Book',
+    width: '50vw',
+    modal: true,
+  });
 };
 </script>
