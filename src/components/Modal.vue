@@ -69,7 +69,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useBookStore } from '@/store/modules/book';
-import { useToast } from '@/composables/useToast';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -78,13 +77,12 @@ const author = ref('');
 const description = ref('');
 const isbn = ref('');
 const coverImage = ref('');
-const genre = ref([]);
+const genre = ref(['Fantasy']);
 const publisher = ref('Publisher Name');
 const publicationDate = ref('2021-01-01');
 const pages = ref(300);
 const error = ref('');
 const bookStore = useBookStore();
-const { showSuccess } = useToast();
 
 const { id } = route.params;
 const isEdit = ref(false);
@@ -101,7 +99,7 @@ onMounted(() => {
       description.value = props.book.description;
       isbn.value = props.book.isbn;
       coverImage.value = props.book.coverImage;
-      genre.value = props.book.genre;
+      genre.value = ['Fantasy'];
       publisher.value = props.book.publisher;
       publicationDate.value = props.book.publicationDate;
       pages.value = props.book.pages;
@@ -129,11 +127,11 @@ const handleSaveBook = () => {
   };
 
   if (isEdit.value) {
-    bookStore.updateBook({ id: id, ...bookData });
-    showSuccess('updated');
+    bookStore.updateBook(id, bookData);
+    emit('update');
   } else {
     bookStore.addBook(bookData);
-    showSuccess('created');
+    bookStore.loadBooks();
   }
 
   handleCancel();

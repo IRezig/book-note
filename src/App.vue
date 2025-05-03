@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router';
 import Menu from '@/components/Menu.vue';
 import DynamicDialog from 'primevue/dynamicdialog';
+import Toast from 'primevue/toast';
 </script>
 
 <template>
@@ -9,5 +10,6 @@ import DynamicDialog from 'primevue/dynamicdialog';
     <Menu />
     <RouterView />
     <DynamicDialog />
+    <Toast />
   </div>
 </template>

@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen bg-orange-100 py-8 px-4 sm:px-6 lg:px-8 rounded-xl">
+  <div v-if="bookStore.isLoading" class="flex justify-center items-center h-screen">
+    <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-cozy-brown"></div>
+  </div>
+  <div v-else class="min-h-screen bg-orange-100 py-8 px-4 sm:px-6 lg:px-8 rounded-xl">
     <div class="flex justify-between items-center">
       <Button
         class="mb-6 p-button-text flex items-center text-gray-600 hover:text-gray-900"
@@ -97,11 +100,11 @@
       </div>
     </div>
   </div>
-  <Modal v-if="showModal" :book="book" @cancel="handleCloseModal" />
+  <Modal v-if="showModal" :book="book" @cancel="handleCloseModal" @update="refreshBook" />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Card, Tag } from 'primevue';
 import { useBookStore } from '@/store/modules/book';
@@ -127,15 +130,6 @@ const book = ref<BookT>({
   isbn: '',
 });
 
-const loadBook = async () => {
-  if (id) {
-    const existingBook = await bookStore.getBook(String(id));
-    if (existingBook) {
-      book.value = existingBook;
-    }
-  }
-};
-
 const handleEditBook = () => {
   showModal.value = true;
 };
@@ -151,9 +145,24 @@ const handleDeleteBook = async () => {
     setTimeout(() => router.push('/'), 800);
   }
 };
-onMounted(() => {
-  loadBook();
-});
+
+const refreshBook = async () => {
+  const newBook = await bookStore.getBook(book.value.id.toString());
+  book.value = newBook;
+};
+
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (newId) {
+      const getBookData = await bookStore.getBook(String(newId));
+      if (getBookData) {
+        book.value = getBookData;
+      }
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style scoped>

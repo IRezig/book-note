@@ -2,8 +2,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { getAllBooks, createBook, getBookById, putBook, deleteBook } from '../../api/book';
 import { Book } from '../../modals';
-
+import { useToast } from '@/composables/useToast';
 export const useBookStore = defineStore('book', () => {
+  const { showSuccess, showError } = useToast();
   const books = ref<Book[]>([]);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
@@ -26,9 +27,11 @@ export const useBookStore = defineStore('book', () => {
     error.value = null;
     try {
       const response = await createBook(newBook);
+      showSuccess('created');
       books.value.push(response.data);
     } catch (err: any) {
       error.value = err.message || 'Failed to create book';
+      showError('Could not create book');
     } finally {
       isLoading.value = false;
     }
@@ -54,11 +57,14 @@ export const useBookStore = defineStore('book', () => {
       const response = await putBook(id, updatedBook);
       const index = books.value.findIndex((b) => String(b.id) === String(id));
       if (index !== -1) {
-        books.value[index] = response.data;
+        books.value[id] = response.data;
       }
+      showSuccess('updated');
+
       return response.data;
     } catch (err: any) {
       error.value = err.message || 'Failed to update book';
+      showError('updated');
     } finally {
       isLoading.value = false;
     }
@@ -78,10 +84,6 @@ export const useBookStore = defineStore('book', () => {
     }
   };
 
-  const getBookById = (id: string) => {
-    return books.value.find((book) => String(book.id) === String(id));
-  };
-
   return {
     books,
     isLoading,
@@ -91,6 +93,5 @@ export const useBookStore = defineStore('book', () => {
     getBook,
     updateBook,
     removeBook,
-    getBookById,
   };
 });
