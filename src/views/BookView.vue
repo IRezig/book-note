@@ -1,12 +1,19 @@
 <template>
   <div class="min-h-screen bg-orange-100 py-8 px-4 sm:px-6 lg:px-8 rounded-xl">
-    <Button
-      class="mb-6 p-button-text flex items-center text-gray-600 hover:text-gray-900"
-      icon="pi pi-arrow-left"
-      label="Back to Library"
-      @click="router.push('/')"
-    />
-
+    <div class="flex justify-between items-center">
+      <Button
+        class="mb-6 p-button-text flex items-center text-gray-600 hover:text-gray-900"
+        icon="pi pi-arrow-left"
+        label="Back to Library"
+        @click="router.push('/')"
+      />
+      <Button
+        class="mb-6 p-button-text flex items-center text-gray-600 hover:text-gray-900"
+        icon="pi pi-trash"
+        label="Delete Book"
+        @click="handleDeleteBook"
+      />
+    </div>
     <div class="animate-fade-in">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Book Cover -->
@@ -23,9 +30,9 @@
               <i class="pi pi-bookmark mr-2"></i>
               <span>Add a note</span>
             </Button>
-            <Button class="bg-cozy-amber hover:bg-cozy-amber/80 flex items-center gap-2">
+            <Button class="bg-cozy-amber hover:bg-cozy-amber/80 flex items-center gap-2" @click="handleEditBook">
               <i class="pi pi-book mr-2"></i>
-              <span>Read Now</span>
+              <span>Update Book</span>
             </Button>
           </div>
         </div>
@@ -90,21 +97,23 @@
       </div>
     </div>
   </div>
+  <Modal v-if="showModal" :book="book" @cancel="handleCloseModal" />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Card, Tag } from 'primevue';
-import { useBookToast } from '@/composables/useBookToast';
 import { useBookStore } from '@/store/modules/book';
 import { BookT } from '@/modals';
+import { useToast } from '@/composables/useToast';
 
 const bookStore = useBookStore();
 const router = useRouter();
 const route = useRoute();
-const { showSuccess, showError } = useBookToast();
-
+const showModal = ref(false);
+const { showSuccess } = useToast();
+const { id } = route.params;
 const book = ref<BookT>({
   id: 0,
   title: '',
@@ -119,7 +128,6 @@ const book = ref<BookT>({
 });
 
 const loadBook = async () => {
-  const { id } = route.params;
   if (id) {
     const existingBook = await bookStore.getBook(String(id));
     if (existingBook) {
@@ -128,6 +136,21 @@ const loadBook = async () => {
   }
 };
 
+const handleEditBook = () => {
+  showModal.value = true;
+};
+
+const handleCloseModal = () => {
+  showModal.value = false;
+};
+
+const handleDeleteBook = async () => {
+  if (id) {
+    await bookStore.removeBook(String(id));
+    showSuccess('deleted');
+    setTimeout(() => router.push('/'), 800);
+  }
+};
 onMounted(() => {
   loadBook();
 });

@@ -1,9 +1,9 @@
-import { useToast } from 'primevue/usetoast';
+import { useToast as useToastPrime } from 'primevue/usetoast';
 
 export type BookAction = 'created' | 'updated' | 'deleted';
 
-export const useBookToast = () => {
-  const toast = useToast();
+export const useToast = () => {
+  const toast = useToastPrime();
 
   const showSuccess = (action: BookAction) => {
     toast.add({

@@ -1,25 +1,24 @@
 <template>
-  <span class="">Update your information.</span>
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 w-3xl"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-orange-100/60"
     tabindex="0"
     aria-modal="true"
     role="dialog"
     aria-label="Add a new Book Modal"
-    @keydown.esc="handleCancel"
+    @click.self="handleCancel"
   >
-    <div :class="`bg-white rounded-lg shadow-lg w-3/4 p-6 relative`" @click.stop>
-      <h2 class="text-2xl font-bold mb-4 text-blue-700">Add a New Book</h2>
-      <form class="flex flex-col gap-4" @submit.prevent="handleAddBook">
+    <div class="bg-white rounded-lg shadow-lg w-3/4 p-6 relative" @click.stop>
+      <h2 class="text-2xl font-bold mb-4 text-blue-700">{{ isEdit ? 'Edit Book' : 'Add a New Book' }}</h2>
+      <form class="flex flex-col gap-4" @submit.prevent="handleSaveBook">
         <label class="flex flex-col gap-1">
           <span class="text-sm font-medium text-gray-700">Title</span>
           <input
             v-model="title"
             type="text"
-            class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
             aria-label="Book Title"
-            placeholder="Enter book title"
+            placeholder="Enter Book Title"
             autofocus
           />
         </label>
@@ -28,27 +27,12 @@
           <input
             v-model="author"
             type="text"
-            class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
             aria-label="Book Author"
             placeholder="Enter author name"
           />
         </label>
-        <label class="flex flex-col gap-1">
-          <span class="text-sm font-medium text-gray-700">Image</span>
-          <input
-            ref="imageInput"
-            type="file"
-            accept="image/*"
-            class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            aria-label="Book Cover Image"
-            required
-            @change="handleImageChange"
-          />
-        </label>
-        <div v-if="imagePreview" class="flex justify-center mt-2">
-          <img :src="imagePreview" alt="Book cover preview" class="h-24 w-24 object-cover rounded border" />
-        </div>
         <div v-if="error" class="text-red-600 text-sm mt-1">{{ error }}</div>
         <div class="flex justify-end gap-2 mt-4">
           <button
@@ -61,10 +45,10 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="px-4 py-2 rounded bg-orange-400 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Add Book"
           >
-            Add Book
+            {{ isEdit ? 'Edit Book' : 'Add Book' }}
           </button>
         </div>
       </form>
@@ -83,72 +67,77 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useDialog } from 'primevue/usedialog';
-import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
+import { ref, onMounted } from 'vue';
+import { useBookStore } from '@/store/modules/book';
+import { useToast } from '@/composables/useToast';
+import { useRoute } from 'vue-router';
 
-const props = defineProps({
-  width: {
-    type: String,
-    default: 'max-w-md',
-  },
-});
-
-const dialog = useDialog();
+const route = useRoute();
 const title = ref('');
 const author = ref('');
-const imageFile = ref(null);
-const imagePreview = ref('');
+const description = ref('');
+const isbn = ref('');
+const coverImage = ref('');
+const genre = ref([]);
+const publisher = ref('Publisher Name');
+const publicationDate = ref('2021-01-01');
+const pages = ref(300);
 const error = ref('');
-const imageInput = ref(null);
+const bookStore = useBookStore();
+const { showSuccess } = useToast();
 
-const handleImageChange = (event) => {
-  const file = event.target.files[0];
-  if (!file) {
-    imageFile.value = null;
-    imagePreview.value = '';
-    return;
-  }
-  if (!file.type.startsWith('image/')) {
-    error.value = 'Please select a valid image file.';
-    imageFile.value = null;
-    imagePreview.value = '';
-    imageInput.value.value = '';
-    return;
-  }
-  error.value = '';
-  imageFile.value = file;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    imagePreview.value = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
+const { id } = route.params;
+const isEdit = ref(false);
 
-const handleAddBook = () => {
-  if (!title.value.trim() || !author.value.trim() || !imageFile.value) {
+const props = defineProps(['book']);
+const emit = defineEmits(['cancel']);
+
+onMounted(() => {
+  if (id) {
+    isEdit.value = true;
+    if (props.book) {
+      title.value = props.book.title;
+      author.value = props.book.author;
+      description.value = props.book.description;
+      isbn.value = props.book.isbn;
+      coverImage.value = props.book.coverImage;
+      genre.value = props.book.genre;
+      publisher.value = props.book.publisher;
+      publicationDate.value = props.book.publicationDate;
+      pages.value = props.book.pages;
+    }
+  }
+});
+
+const handleSaveBook = () => {
+  if (!title.value.trim() || !author.value.trim()) {
     error.value = 'All fields are required.';
     return;
   }
   error.value = '';
-  // Emit or handle the new book data here
-  // For now, just close the modal
-  dialog.close();
+
+  const bookData = {
+    title: title.value,
+    author: author.value,
+    isbn: isbn.value,
+    description: description.value,
+    coverImage: coverImage.value,
+    genre: genre.value,
+    publisher: publisher.value,
+    publicationDate: publicationDate.value,
+    pages: pages.value,
+  };
+
+  if (isEdit.value) {
+    bookStore.updateBook({ id: id, ...bookData });
+    showSuccess('updated');
+  } else {
+    bookStore.addBook(bookData);
+    showSuccess('created');
+  }
+
+  handleCancel();
 };
 
-const handleCancel = () => {
-  emit('cancel');
-};
-
-const emit = defineEmits(['cancel', 'save']);
-
-const cancel = () => {
-  emit('cancel');
-};
-
-const save = () => {
-  emit('save');
-};
+const handleCancel = () => emit('cancel');
 </script>

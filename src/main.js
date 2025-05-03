@@ -6,7 +6,6 @@ import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
-import DynamicDialog from 'primevue/dynamicdialog';
 import '@/assets/main.css';
 import 'primeicons/primeicons.css';
 
@@ -24,5 +23,4 @@ app.use(PrimeVue, {
   },
 });
 app.use(ToastService);
-app.component('DynamicDialog', DynamicDialog);
 app.mount('#app');

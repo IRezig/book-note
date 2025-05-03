@@ -1,13 +1,15 @@
 <template>
    <Card class="w-80 h-80 overflow-hidden mt-4 hover:cursor-pointer" @click="handleClick">
         <template #header>
-            <img
-                :alt="'user header'"
-                :src="selectedImage"
-                class="w-full h-40 object-cover cursor-pointer"
-                tabindex="0"
-                aria-label="Post header image"
-            />
+            <div class="relative w-full h-40">
+                <img
+                    :alt="'user header'"
+                    :src="selectedImage"
+                    class="w-full h-40 object-cover cursor-pointer"
+                    tabindex="0"
+                    aria-label="Post header image"
+                />
+            </div>
         </template>
         <template #title>{{ book.title }}</template>
         <template #subtitle>{{ book.author }}</template>
@@ -34,9 +36,7 @@ const router = useRouter();
 const { book } = defineProps<{ book: Book }>();
 
 const imagePaths = [
-  new URL('../../public/code_1.jpg', import.meta.url).href,
-  new URL('../../public/code_2.jpg', import.meta.url).href,
-  new URL('../../public/code_3.jpg', import.meta.url).href
+  new URL('../../public/books.png', import.meta.url).href,
 ];
 
 const shuffleImages = (images: string[]): string => {
@@ -49,4 +49,8 @@ const selectedImage = shuffleImages(imagePaths);
 const handleClick = () => {
   router.push(`/book/${book.id}`);
 };
+
+// const handleEditClick = () => {
+//   showModal.value = true;
+// };
 </script>

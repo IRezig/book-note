@@ -78,6 +78,10 @@ export const useBookStore = defineStore('book', () => {
     }
   };
 
+  const getBookById = (id: string) => {
+    return books.value.find((book) => String(book.id) === String(id));
+  };
+
   return {
     books,
     isLoading,
@@ -87,5 +91,6 @@ export const useBookStore = defineStore('book', () => {
     getBook,
     updateBook,
     removeBook,
+    getBookById,
   };
 });
