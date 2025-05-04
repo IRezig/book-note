@@ -7,6 +7,7 @@ export interface Book {
   genres: string[];
   language: string;
   pages: number;
+  rating: number;
 }
 
 export interface Note {

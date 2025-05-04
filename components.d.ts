@@ -20,6 +20,7 @@ declare module 'vue' {
     Modal: typeof import('./src/components/Modal.vue')['default']
     NoteModal: typeof import('./src/components/NoteModal.vue')['default']
     PostCard: typeof import('./src/components/PostCard.vue')['default']
+    Rating: typeof import('./src/components/Rating.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TButton: typeof import('tdesign-vue-next')['Button']

@@ -8,7 +8,7 @@
     @click.self="handleCancel"
   >
     <div class="bg-white rounded-lg shadow-lg w-3/4 p-6 relative" @click.stop>
-      <h2 class="text-2xl font-bold mb-4 text-blue-700">{{ isEdit ? 'Edit Book' : 'Add a New Book' }}</h2>
+      <h2 class="text-2xl font-bold mb-4 text-orange-700">{{ isEdit ? 'Edit Book' : 'Add a New Book' }}</h2>
       <form class="space-y-4" @submit.prevent="handleSaveBook">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <label class="flex flex-col gap-1">
@@ -85,6 +85,10 @@
               multiple
             />
           </label>
+          <label class="flex flex-col gap-1 items-center">
+            <span class="text-sm font-medium text-gray-700">Rating</span>
+            <Rating v-model:rating="rating" />
+          </label>
         </div>
         <label class="flex flex-col gap-1">
           <span class="text-sm font-medium text-gray-700">Description</span>
@@ -132,7 +136,9 @@
 import { ref, onMounted } from 'vue';
 import { useBookStore } from '@/store/modules/book';
 import { useRoute } from 'vue-router';
-import { MultiSelect, Select } from 'primevue';
+import MultiSelect from 'primevue/multiselect';
+import Select from 'primevue/select';
+import Rating from './Rating.vue';
 
 const route = useRoute();
 const title = ref('');
@@ -142,6 +148,7 @@ const coverImage = ref('');
 const genres = ref([]);
 const pages = ref(0);
 const language = ref('');
+const rating = ref(0);
 const error = ref('');
 const bookStore = useBookStore();
 
@@ -177,6 +184,7 @@ onMounted(() => {
       );
       pages.value = props.book.pages;
       language.value = languagesOptions.value.find((option) => option.name === props.book.language);
+      rating.value = props.book.rating;
     }
   }
 });
@@ -198,10 +206,10 @@ const handleSaveBook = () => {
     genres: genresArray,
     pages: pages.value,
     language: language.value.name,
+    rating: rating.value,
   };
 
   if (isEdit.value) {
-    console.log('bookData', bookData);
     bookStore.updateBook(id, bookData);
     emit('update');
   } else {

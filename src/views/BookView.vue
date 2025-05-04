@@ -49,10 +49,9 @@
               <Tag v-for="genre in book.genres" :key="genre" :value="genre"></Tag>
             </div>
           </div>
-
           <Card class="p-6 bg-white/80 backdrop-blur-sm">
             <template #content>
-              <h2 class="font-serif text-xl font-semibold mb-4 text-blue-500">About this book</h2>
+              <h2 class="font-serif text-xl font-semibold mb-4 text-orange-600">About this book</h2>
               <p class="text-gray-700 leading-relaxed">{{ book.description }}</p>
             </template>
           </Card>
@@ -81,6 +80,7 @@
               </p>
             </div>
           </div>
+          <Rating :rating="book.rating" readonly />
         </div>
       </div>
     </div>
@@ -97,6 +97,7 @@ import { useBookStore } from '@/store/modules/book';
 import { Book } from '@/modals';
 import { useToast } from '@/composables/useToast';
 import NoteModal from '@/components/NoteModal.vue';
+import Rating from '@/components/Rating.vue';
 const bookStore = useBookStore();
 const router = useRouter();
 const route = useRoute();
@@ -114,6 +115,7 @@ const book = ref<Book>({
   genres: [],
   pages: 0,
   language: '',
+  rating: 0,
 });
 
 const handleEditBook = () => {
