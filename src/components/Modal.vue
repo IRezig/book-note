@@ -9,32 +9,99 @@
   >
     <div class="bg-white rounded-lg shadow-lg w-3/4 p-6 relative" @click.stop>
       <h2 class="text-2xl font-bold mb-4 text-blue-700">{{ isEdit ? 'Edit Book' : 'Add a New Book' }}</h2>
-      <form class="flex flex-col gap-4" @submit.prevent="handleSaveBook">
+      <form class="space-y-4" @submit.prevent="handleSaveBook">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Title</span>
+            <input
+              v-model="title"
+              type="text"
+              class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+              aria-label="Book Title"
+              placeholder="Enter Book Title"
+              autofocus
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Author</span>
+            <input
+              v-model="author"
+              type="text"
+              class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+              aria-label="Book Author"
+              placeholder="Enter author name"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Language</span>
+            <Select
+              v-model="language"
+              :options="languagesOptions"
+              optionLabel="name"
+              placeholder="Select Language"
+              class="w-full"
+              display="chip"
+              aria-label="Select Language"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Cover Image URL</span>
+            <input
+              v-model="coverImage"
+              type="text"
+              class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Cover Image URL"
+              placeholder="../../public/book.png"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Genres</span>
+            <MultiSelect
+              v-model="genres"
+              :options="genresOptions"
+              optionLabel="name"
+              placeholder="Select Genres"
+              class="w-full"
+              display="chip"
+              :showClear="true"
+              aria-label="Select Genres"
+              multiple
+            >
+              <template #option="slotProps">
+                <div class="flex items-center">
+                  <div>{{ slotProps.option.name }}</div>
+                </div>
+              </template>
+              <template #dropdownicon>
+                <i class="pi pi-book" />
+              </template>
+            </MultiSelect>
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Pages</span>
+            <input
+              v-model="pages"
+              type="number"
+              class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              aria-label="Pages"
+              placeholder="Number of pages (optional)"
+              min="1"
+            />
+          </label>
+        </div>
         <label class="flex flex-col gap-1">
-          <span class="text-sm font-medium text-gray-700">Title</span>
-          <input
-            v-model="title"
-            type="text"
-            class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-            aria-label="Book Title"
-            placeholder="Enter Book Title"
-            autofocus
-          />
-        </label>
-        <label class="flex flex-col gap-1">
-          <span class="text-sm font-medium text-gray-700">Author</span>
-          <input
-            v-model="author"
-            type="text"
-            class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-            aria-label="Book Author"
-            placeholder="Enter author name"
-          />
+          <span class="text-sm font-medium text-gray-700">Description</span>
+          <textarea
+            v-model="description"
+            class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[120px]"
+            aria-label="Book Description"
+            placeholder="Book description"
+          ></textarea>
         </label>
         <div v-if="error" class="text-red-600 text-sm mt-1">{{ error }}</div>
-        <div class="flex justify-end gap-2 mt-4">
+        <div class="flex justify-end gap-2 pt-4">
           <button
             type="button"
             class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -70,19 +137,31 @@
 import { ref, onMounted } from 'vue';
 import { useBookStore } from '@/store/modules/book';
 import { useRoute } from 'vue-router';
+import { MultiSelect, Select } from 'primevue';
 
 const route = useRoute();
 const title = ref('');
 const author = ref('');
 const description = ref('');
-const isbn = ref('');
 const coverImage = ref('');
-const genre = ref(['Fantasy']);
-const publisher = ref('Publisher Name');
-const publicationDate = ref('2021-01-01');
+const genres = ref([]);
 const pages = ref(300);
+const language = ref(null);
 const error = ref('');
 const bookStore = useBookStore();
+
+const genresOptions = ref([
+  { name: 'Fantasy', code: 'FA' },
+  { name: 'Mystery', code: 'MY' },
+  { name: 'Romance', code: 'RO' },
+  { name: 'Science Fiction', code: 'SF' },
+  { name: 'Thriller', code: 'TH' },
+]);
+const languagesOptions = ref([
+  { name: 'English', code: 'EN' },
+  { name: 'Arabic', code: 'AR' },
+  { name: 'French', code: 'FR' },
+]);
 
 const { id } = route.params;
 const isEdit = ref(false);
@@ -97,12 +176,12 @@ onMounted(() => {
       title.value = props.book.title;
       author.value = props.book.author;
       description.value = props.book.description;
-      isbn.value = props.book.isbn;
       coverImage.value = props.book.coverImage;
-      genre.value = ['Fantasy'];
-      publisher.value = props.book.publisher;
-      publicationDate.value = props.book.publicationDate;
+      genres.value = genresOptions.value.filter(
+        (option) => props.book.genres && props.book.genres.includes(option.name),
+      );
       pages.value = props.book.pages;
+      language.value = languagesOptions.value.find((option) => option.name === props.book.language) || null;
     }
   }
 });
@@ -114,16 +193,16 @@ const handleSaveBook = () => {
   }
   error.value = '';
 
+  const genresArray = genres.value.map((g) => g.name);
+
   const bookData = {
     title: title.value,
     author: author.value,
-    isbn: isbn.value,
     description: description.value,
     coverImage: coverImage.value,
-    genre: genre.value,
-    publisher: publisher.value,
-    publicationDate: publicationDate.value,
+    genres: genresArray,
     pages: pages.value,
+    language: language.value ? language.value.name : '',
   };
 
   if (isEdit.value) {

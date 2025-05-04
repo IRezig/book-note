@@ -12,17 +12,11 @@
             </div>
         </template>
         <template #title>{{ book.title }}</template>
-        <template #subtitle>{{ book.author }}</template>
-        <Tag
-          v-for="genre in book.genre"
-          :key="genre"
-          class="bg-amber-400 text-cozy-brown border-cozy-brown/30"
-          :value="genre"
-        />
+        <template #subtitle>{{ book.author }}        </template>
         <template #content>
-            <p class="m-0">
-              {{ book.description }}
-            </p>
+           <div class="mt-2 flex flex-wrap gap-2">
+              <Tag v-for="genre in book.genres" :key="genre" :value="genre"></Tag>
+          </div>
         </template>
     </Card>
 </template>
@@ -49,8 +43,4 @@ const selectedImage = shuffleImages(imagePaths);
 const handleClick = () => {
   router.push(`/book/${book.id}`);
 };
-
-// const handleEditClick = () => {
-//   showModal.value = true;
-// };
 </script>

@@ -4,11 +4,9 @@ export interface Book {
   author: string;
   description: string;
   coverImage: string;
-  genre: string[];
-  publisher: string;
-  publicationDate: string;
+  genres: string[];
+  language: string;
   pages: number;
-  isbn: string;
 }
 
 export interface BookT {
@@ -17,11 +15,9 @@ export interface BookT {
   author: string;
   description: string;
   coverImage: string;
-  genre: string[];
-  publisher: string;
-  publicationDate: string;
+  genres: string[];
+  language: string;
   pages: number;
-  isbn: string;
 }
 
 export interface Note {

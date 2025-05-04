@@ -43,52 +43,35 @@
         <!-- Book Details -->
         <div class="md:col-span-2 space-y-6">
           <div>
-            <h1 class="font-serif text-3xl md:text-4xl font-bold text-cozy-brown mb-2">{{ book.title }}</h1>
+            <h1 class="font-serif text-3xl md:text-4xl font-bold text-blue-500 mb-2">{{ book.title }}</h1>
             <p class="text-lg text-gray-600">by {{ book.author }}</p>
             <div class="mt-3 flex flex-wrap gap-2">
-              <Tag
-                v-for="genre in book.genre"
-                :key="genre"
-                class="bg-amber-400 text-cozy-brown border-cozy-brown/30"
-                :value="genre"
-              />
+              <Tag v-for="genre in book.genres" :key="genre" :value="genre"></Tag>
             </div>
           </div>
 
           <Card class="p-6 bg-white/80 backdrop-blur-sm">
             <template #content>
-              <h2 class="font-serif text-xl font-semibold mb-4 text-cozy-brown">About this book</h2>
+              <h2 class="font-serif text-xl font-semibold mb-4 text-blue-500">About this book</h2>
               <p class="text-gray-700 leading-relaxed">{{ book.description }}</p>
             </template>
           </Card>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="bg-amber-400 p-4 rounded-lg">
-              <h3 class="font-medium text-cozy-brown mb-2">Details</h3>
+              <h3 class="font-medium text-blue-500 mb-2">Details</h3>
               <ul class="space-y-2 text-sm">
-                <li class="flex justify-between">
-                  <span class="text-gray-600">Publisher</span>
-                  <span class="font-medium">{{ book.publisher }}</span>
-                </li>
-                <li class="flex justify-between">
-                  <span class="text-gray-600">Publication Date</span>
-                  <span class="font-medium">{{ book.publicationDate }}</span>
-                </li>
                 <li class="flex justify-between">
                   <span class="text-gray-600">Pages</span>
                   <span class="font-medium">{{ book.pages }}</span>
-                </li>
-                <li class="flex justify-between">
-                  <span class="text-gray-600">ISBN</span>
-                  <span class="font-medium">{{ book.isbn }}</span>
                 </li>
               </ul>
             </div>
 
             <div class="bg-yellow-500 p-4 rounded-lg">
               <div class="flex items-center mb-3">
-                <i class="pi pi-bookmark text-cozy-brown mr-2"></i>
-                <h3 class="font-medium text-cozy-brown">Reader's Notes</h3>
+                <i class="pi pi-bookmark text-blue-500 mr-2"></i>
+                <h3 class="font-medium text-blue-500">Reader's Notes</h3>
               </div>
               <p class="text-sm text-gray-600 italic">
                 "A cozy reading companion for those quiet evenings with a cup of tea."
@@ -123,11 +106,8 @@ const book = ref<BookT>({
   author: '',
   description: '',
   coverImage: '',
-  genre: [],
-  publisher: '',
-  publicationDate: '',
+  genres: [],
   pages: 0,
-  isbn: '',
 });
 
 const handleEditBook = () => {
