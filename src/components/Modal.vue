@@ -43,6 +43,7 @@
               placeholder="Select Language"
               class="w-full"
               display="chip"
+              :showClear="true"
               aria-label="Select Language"
             />
           </label>
@@ -68,16 +69,7 @@
               :showClear="true"
               aria-label="Select Genres"
               multiple
-            >
-              <template #option="slotProps">
-                <div class="flex items-center">
-                  <div>{{ slotProps.option.name }}</div>
-                </div>
-              </template>
-              <template #dropdownicon>
-                <i class="pi pi-book" />
-              </template>
-            </MultiSelect>
+            />
           </label>
           <label class="flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-700">Pages</span>
@@ -145,8 +137,8 @@ const author = ref('');
 const description = ref('');
 const coverImage = ref('');
 const genres = ref([]);
-const pages = ref(300);
-const language = ref(null);
+const pages = ref(0);
+const language = ref('');
 const error = ref('');
 const bookStore = useBookStore();
 
@@ -181,7 +173,7 @@ onMounted(() => {
         (option) => props.book.genres && props.book.genres.includes(option.name),
       );
       pages.value = props.book.pages;
-      language.value = languagesOptions.value.find((option) => option.name === props.book.language) || null;
+      language.value = languagesOptions.value.find((option) => option.name === props.book.language);
     }
   }
 });
@@ -202,10 +194,11 @@ const handleSaveBook = () => {
     coverImage: coverImage.value,
     genres: genresArray,
     pages: pages.value,
-    language: language.value ? language.value.name : '',
+    language: language.value.name,
   };
 
   if (isEdit.value) {
+    console.log('bookData', bookData);
     bookStore.updateBook(id, bookData);
     emit('update');
   } else {

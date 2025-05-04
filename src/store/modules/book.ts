@@ -53,6 +53,7 @@ export const useBookStore = defineStore('book', () => {
   const updateBook = async (id: string, updatedBook: Book) => {
     isLoading.value = true;
     error.value = null;
+    console.log('language', updatedBook.language);
     try {
       const response = await putBook(id, updatedBook);
       const index = books.value.findIndex((b) => String(b.id) === String(id));
