@@ -1,11 +1,11 @@
 import { useToast as useToastPrime } from 'primevue/usetoast';
 
-export type BookAction = 'created' | 'updated' | 'deleted';
+export type action = 'created' | 'updated' | 'deleted';
 
 export const useToast = () => {
   const toast = useToastPrime();
 
-  const showSuccess = (action: BookAction) => {
+  const showSuccess = (action: action) => {
     toast.add({
       severity: 'success',
       summary: 'Success',

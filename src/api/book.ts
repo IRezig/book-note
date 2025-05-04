@@ -1,3 +1,4 @@
+import { Book } from '@/modals';
 import apiClient from './apiClient';
 
 async function getAllBooks() {
@@ -5,22 +6,22 @@ async function getAllBooks() {
   return response.data;
 }
 
-async function createBook(bookData) {
+async function createBook(bookData: Book) {
   const response = await apiClient.post('/books', bookData);
   return response.data;
 }
 
-async function getBookById(bookId) {
+async function getBookById(bookId: string) {
   const response = await apiClient.get(`/books/${bookId}`);
   return response.data;
 }
 
-async function putBook(bookId, bookData) {
+async function putBook(bookId: string, bookData: Book) {
   const response = await apiClient.put(`/books/${bookId}`, bookData);
   return response.data;
 }
 
-async function deleteBook(bookId) {
+async function deleteBook(bookId: string) {
   const response = await apiClient.delete(`/books/${bookId}`);
   return response.data;
 }

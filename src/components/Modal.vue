@@ -34,19 +34,7 @@
               placeholder="Enter author name"
             />
           </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium text-gray-700">Language</span>
-            <Select
-              v-model="language"
-              :options="languagesOptions"
-              optionLabel="name"
-              placeholder="Select Language"
-              class="w-full"
-              display="chip"
-              :showClear="true"
-              aria-label="Select Language"
-            />
-          </label>
+
           <label class="flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-700">Cover Image URL</span>
             <input
@@ -58,20 +46,6 @@
             />
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium text-gray-700">Genres</span>
-            <MultiSelect
-              v-model="genres"
-              :options="genresOptions"
-              optionLabel="name"
-              placeholder="Select Genres"
-              class="w-full"
-              display="chip"
-              :showClear="true"
-              aria-label="Select Genres"
-              multiple
-            />
-          </label>
-          <label class="flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-700">Pages</span>
             <input
               v-model="pages"
@@ -80,6 +54,35 @@
               aria-label="Pages"
               placeholder="Number of pages (optional)"
               min="1"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Language</span>
+            <Select
+              v-model="language"
+              :options="languagesOptions"
+              optionLabel="name"
+              placeholder="Select Language"
+              class="w-full text-black"
+              style="background-color: white"
+              display="chip"
+              :showClear="true"
+              aria-label="Select Language"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-700">Genres</span>
+            <MultiSelect
+              v-model="genres"
+              :options="genresOptions"
+              optionLabel="name"
+              placeholder="Select Genres"
+              class="w-full text-gray-700"
+              style="background-color: white; color: black"
+              display="chip"
+              :showClear="true"
+              aria-label="Select Genres"
+              multiple
             />
           </label>
         </div>

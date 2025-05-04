@@ -29,7 +29,7 @@
             />
           </div>
           <div class="mt-6 flex justify-center space-x-3">
-            <Button variant="outline" class="flex items-center gap-2">
+            <Button variant="outline" class="flex items-center gap-2" @click="handleAddNote">
               <i class="pi pi-bookmark mr-2"></i>
               <span>Add a note</span>
             </Button>
@@ -58,8 +58,11 @@
           </Card>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-amber-400 p-4 rounded-lg">
-              <h3 class="font-medium text-blue-500 mb-2">Details</h3>
+            <div class="bg-yellow-200 p-4 rounded-lg">
+              <div class="flex items-center mb-3">
+                <i class="pi pi-book text-blue-300 mr-2"></i>
+                <h3 class="font-medium text-blue-300 mb-2">Details</h3>
+              </div>
               <ul class="space-y-2 text-sm">
                 <li class="flex justify-between">
                   <span class="text-gray-600">Pages</span>
@@ -68,21 +71,21 @@
               </ul>
             </div>
 
-            <div class="bg-yellow-500 p-4 rounded-lg">
+            <div class="bg-yellow-100 p-4 rounded-lg">
               <div class="flex items-center mb-3">
-                <i class="pi pi-bookmark text-blue-500 mr-2"></i>
-                <h3 class="font-medium text-blue-500">Reader's Notes</h3>
+                <i class="pi pi-bookmark text-blue-300 mr-2"></i>
+                <h3 class="font-medium text-blue-300">Reader's Notes</h3>
               </div>
               <p class="text-sm text-gray-600 italic">
-                "A cozy reading companion for those quiet evenings with a cup of tea."
+                {{ book.description }}
               </p>
-              <div class="mt-3 text-sm text-right text-cozy-terracotta">- CozyReads Editor</div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <NoteModal v-if="showNoteModal" :book="book" @cancel="handleCloseNoteModal" @update="refreshBook" />
   <Modal v-if="showModal" :book="book" @cancel="handleCloseModal" @update="refreshBook" />
 </template>
 
@@ -91,16 +94,18 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Card, Tag } from 'primevue';
 import { useBookStore } from '@/store/modules/book';
-import { BookT } from '@/modals';
+import { Book } from '@/modals';
 import { useToast } from '@/composables/useToast';
-
+import NoteModal from '@/components/NoteModal.vue';
 const bookStore = useBookStore();
 const router = useRouter();
 const route = useRoute();
 const showModal = ref(false);
+const showNoteModal = ref(false);
 const { showSuccess } = useToast();
 const { id } = route.params;
-const book = ref<BookT>({
+
+const book = ref<Book>({
   id: 0,
   title: '',
   author: '',
@@ -108,6 +113,7 @@ const book = ref<BookT>({
   coverImage: '',
   genres: [],
   pages: 0,
+  language: '',
 });
 
 const handleEditBook = () => {
@@ -129,6 +135,14 @@ const handleDeleteBook = async () => {
 const refreshBook = async () => {
   const newBook = await bookStore.getBook(book.value.id.toString());
   book.value = newBook;
+};
+
+const handleAddNote = () => {
+  showNoteModal.value = true;
+};
+
+const handleCloseNoteModal = () => {
+  showNoteModal.value = false;
 };
 
 watch(

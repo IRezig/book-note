@@ -18,6 +18,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     Modal: typeof import('./src/components/Modal.vue')['default']
+    NoteModal: typeof import('./src/components/NoteModal.vue')['default']
     PostCard: typeof import('./src/components/PostCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { getAllBooks, createBook, getBookById, putBook, deleteBook } from '../../api/book';
 import { Book } from '../../modals';
 import { useToast } from '@/composables/useToast';
+
 export const useBookStore = defineStore('book', () => {
   const { showSuccess, showError } = useToast();
   const books = ref<Book[]>([]);
