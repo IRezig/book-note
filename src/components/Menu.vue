@@ -12,24 +12,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import Menubar from 'primevue/menubar';
 import InputSwitch from 'primevue/inputswitch';
 import { useTheme } from '@/composables/useTheme';
+import { useRouter } from 'vue-router';
 
 const { isDark, initializeTheme } = useTheme();
+const router = useRouter();
 
 const items = ref([
   {
     label: 'Home',
     icon: 'pi pi-home',
-    to: '/',
+    command: () => router.push('/'),
   },
   {
     label: 'Books',
     icon: 'pi pi-book',
-    to: '/books',
+    command: () => router.push('/books'),
   },
 ]);
 

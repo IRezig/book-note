@@ -210,6 +210,7 @@ const handleSaveBook = () => {
   if (isEdit.value) {
     bookStore.updateBook(id, bookData);
     emit('update');
+    bookStore.getBook(id);
   } else {
     bookStore.addBook(bookData);
     bookStore.loadBooks();

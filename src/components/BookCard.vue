@@ -4,7 +4,7 @@
             <div class="relative w-full h-40">
                 <img
                     :alt="'user header'"
-                    :src="selectedImage"
+                    :src="book.coverImage"
                     class="w-full h-40 object-cover cursor-pointer"
                     tabindex="0"
                     aria-label="Post header image"
