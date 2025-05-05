@@ -36,14 +36,11 @@
           </label>
 
           <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium text-gray-700">Cover Image URL</span>
-            <input
-              v-model="coverImage"
-              type="text"
-              class="border border-gray-300 rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-              aria-label="Cover Image URL"
-              placeholder="../../public/book.png"
-            />
+            <span class="text-sm font-medium text-gray-700">Cover Image</span>
+            <ImageButton @file-selected="handleImageSelected" />
+            <div v-if="coverImagePreview" class="mt-2 flex justify-center">
+              <img :src="coverImagePreview" alt="Book cover preview" class="max-h-32 rounded shadow" />
+            </div>
           </label>
           <label class="flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-700">Pages</span>
@@ -64,8 +61,7 @@
               optionLabel="name"
               placeholder="Select Language"
               class="w-full text-black"
-              style="background-color: white"
-              display="chip"
+              style="background-color: white; color: black"
               :showClear="true"
               aria-label="Select Language"
             />
@@ -139,6 +135,7 @@ import { useRoute } from 'vue-router';
 import MultiSelect from 'primevue/multiselect';
 import Select from 'primevue/select';
 import Rating from './Rating.vue';
+import ImageButton from './ImageButton.vue';
 
 const route = useRoute();
 const title = ref('');
@@ -147,10 +144,11 @@ const description = ref('');
 const coverImage = ref('');
 const genres = ref([]);
 const pages = ref(0);
-const language = ref('');
+const language = ref(null);
 const rating = ref(0);
 const error = ref('');
 const bookStore = useBookStore();
+const coverImagePreview = ref('');
 
 const genresOptions = ref([
   { name: 'Fantasy', code: 'FA' },
@@ -221,4 +219,14 @@ const handleSaveBook = () => {
 };
 
 const handleCancel = () => emit('cancel');
+
+const handleImageSelected = (file) => {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    coverImagePreview.value = e.target.result;
+    coverImage.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
 </script>

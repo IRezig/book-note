@@ -10,12 +10,7 @@
         label="Back to Library"
         @click="router.push('/')"
       />
-      <Button
-        class="mb-6 p-button-text flex items-center text-gray-600 hover:text-gray-900"
-        icon="pi pi-trash"
-        label="Delete Book"
-        @click="handleDeleteBook"
-      />
+      <Rating :rating="book.rating" readonly />
     </div>
     <div class="animate-fade-in">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -29,9 +24,9 @@
             />
           </div>
           <div class="mt-6 flex justify-center space-x-3">
-            <Button variant="outline" class="flex items-center gap-2" @click="handleAddNote">
-              <i class="pi pi-bookmark mr-2"></i>
-              <span>Add a note</span>
+            <Button variant="outline" class="flex items-center gap-2" @click="handleDeleteBook">
+              <i class="pi pi-trash mr-2"></i>
+              <span>Delete Book</span>
             </Button>
             <Button class="bg-cozy-amber hover:bg-cozy-amber/80 flex items-center gap-2" @click="handleEditBook">
               <i class="pi pi-book mr-2"></i>
@@ -43,7 +38,7 @@
         <!-- Book Details -->
         <div class="md:col-span-2 space-y-6">
           <div>
-            <h1 class="font-serif text-3xl md:text-4xl font-bold text-blue-500 mb-2">{{ book.title }}</h1>
+            <h1 class="font-serif text-3xl md:text-4xl font-bold text-orange-600 mb-2">{{ book.title }}</h1>
             <p class="text-lg text-gray-600">by {{ book.author }}</p>
             <div class="mt-3 flex flex-wrap gap-2">
               <Tag v-for="genre in book.genres" :key="genre" :value="genre"></Tag>
@@ -51,7 +46,7 @@
           </div>
           <Card class="p-6 bg-white/80 backdrop-blur-sm">
             <template #content>
-              <h2 class="font-serif text-xl font-semibold mb-4 text-orange-600">About this book</h2>
+              <h2 class="font-serif text-xl font-semibold mb-4">About this book</h2>
               <p class="text-gray-700 leading-relaxed">{{ book.description }}</p>
             </template>
           </Card>
@@ -80,7 +75,6 @@
               </p>
             </div>
           </div>
-          <Rating :rating="book.rating" readonly />
         </div>
       </div>
     </div>
