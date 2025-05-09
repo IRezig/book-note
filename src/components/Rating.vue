@@ -18,8 +18,7 @@ const { rating, readonly } = defineProps({
 
 const emit = defineEmits(['update:rating']);
 
-const handleChange = (event) => {
-  console.log(event.value);
-  emit('update:rating', event.value);
+const handleModelValueUpdate = (value) => {
+  emit('update:rating', value);
 };
 </script>

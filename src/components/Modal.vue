@@ -64,7 +64,14 @@
               style="background-color: white; color: black"
               :showClear="true"
               aria-label="Select Language"
-            />
+            >
+              <template #option="{ option }">
+                <div class="flex items-center">
+                  <img :src="option.image" :alt="option.name" class="w-6 h-6 mr-2" />
+                  {{ option.name }}
+                </div>
+              </template>
+            </Select>
           </label>
           <label class="flex flex-col gap-1">
             <span class="text-sm font-medium text-gray-700">Genres</span>
@@ -73,7 +80,6 @@
               :options="genresOptions"
               optionLabel="name"
               placeholder="Select Genres"
-              class="w-full text-gray-700"
               style="background-color: white; color: black"
               display="chip"
               :showClear="true"
@@ -83,7 +89,7 @@
           </label>
           <label class="flex flex-col gap-1 items-center">
             <span class="text-sm font-medium text-gray-700">Rating</span>
-            <Rating v-model:rating="rating" />
+            <Rating :rating="rating" @update:modelValue="handleModelValueUpdate" />
           </label>
         </div>
         <label class="flex flex-col gap-1">
@@ -144,8 +150,8 @@ const description = ref('');
 const coverImage = ref('');
 const genres = ref([]);
 const pages = ref(0);
-const language = ref(null);
-const rating = ref(0);
+const language = ref('English');
+const rating = ref(4);
 const error = ref('');
 const bookStore = useBookStore();
 const coverImagePreview = ref('');
@@ -156,16 +162,23 @@ const genresOptions = ref([
   { name: 'Romance', code: 'RO' },
   { name: 'Science Fiction', code: 'SF' },
   { name: 'Thriller', code: 'TH' },
+  { name: 'Crime', code: 'CR' },
+  { name: 'Horror', code: 'HO' },
+  { name: 'Documentary', code: 'DO' },
+  { name: 'Biography', code: 'BI' },
+  { name: 'Autobiography', code: 'AU' },
+  { name: 'Philosophy', code: 'PH' },
+  { name: 'History', code: 'HI' },
+  { name: 'Self Development', code: 'SD' },
 ]);
 const languagesOptions = ref([
-  { name: 'English', code: 'EN' },
-  { name: 'Arabic', code: 'AR' },
-  { name: 'French', code: 'FR' },
+  { name: 'English', code: 'EN', image: '../../public/english.png' },
+  { name: 'Arabic', code: 'AR', image: '../../public/arabic.png' },
+  { name: 'French', code: 'FR', image: '../../public/french.png' },
 ]);
 
 const { id } = route.params;
 const isEdit = ref(false);
-
 const props = defineProps(['book']);
 const emit = defineEmits(['cancel']);
 
@@ -186,6 +199,10 @@ onMounted(() => {
     }
   }
 });
+
+const handleModelValueUpdate = (value) => {
+  rating.value = value;
+};
 
 const handleSaveBook = () => {
   if (!title.value.trim() || !author.value.trim()) {
@@ -210,13 +227,12 @@ const handleSaveBook = () => {
   if (isEdit.value) {
     bookStore.updateBook(id, bookData);
     emit('update');
-    bookStore.getBook(id);
   } else {
     bookStore.addBook(bookData);
     bookStore.loadBooks();
   }
 
-  handleCancel();
+  emit('cancel');
 };
 
 const handleCancel = () => emit('cancel');

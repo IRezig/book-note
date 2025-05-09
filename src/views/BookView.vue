@@ -1,5 +1,5 @@
 <template>
-  <div v-if="bookStore.isLoading" class="flex justify-center items-center h-screen">
+  <div v-if="bookStore.isLoading" class="flex justify-center items-center">
     <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-cozy-brown"></div>
   </div>
   <div v-else class="min-h-screen bg-orange-100 py-8 px-4 sm:px-6 lg:px-8 rounded-xl">
@@ -24,11 +24,11 @@
             />
           </div>
           <div class="mt-6 flex justify-center space-x-3">
-            <Button variant="outline" class="flex items-center gap-2" @click="handleDeleteBook">
+            <Button class="bg-amber-500! hover:bg-amber-400/80! flex items-center gap-2" @click="handleDeleteBook">
               <i class="pi pi-trash mr-2"></i>
               <span>Delete Book</span>
             </Button>
-            <Button class="bg-cozy-amber hover:bg-cozy-amber/80 flex items-center gap-2" @click="handleEditBook">
+            <Button class="bg-amber-500! hover:bg-amber-400/80! flex items-center gap-2" @click="handleEditBook">
               <i class="pi pi-book mr-2"></i>
               <span>Update Book</span>
             </Button>
@@ -41,37 +41,47 @@
             <h1 class="font-serif text-3xl md:text-4xl font-bold text-orange-600 mb-2">{{ book.title }}</h1>
             <p class="text-lg text-gray-600">by {{ book.author }}</p>
             <div class="mt-3 flex flex-wrap gap-2">
-              <Tag v-for="genre in book.genres" :key="genre" :value="genre"></Tag>
+              <Tag
+                v-for="genre in book.genres"
+                :key="genre"
+                class="bg-amber-600! hover:bg-amber-400/80! flex items-center gap-2"
+                :value="genre"
+              ></Tag>
             </div>
           </div>
-          <Card class="p-6 bg-white/80 backdrop-blur-sm">
-            <template #content>
-              <h2 class="font-serif text-xl font-semibold mb-4">About this book</h2>
-              <p class="text-gray-700 leading-relaxed">{{ book.description }}</p>
-            </template>
-          </Card>
-
+          <div class="">
+            <div class="bg-orange-200 p-4 rounded-lg">
+              <div class="items-center mb-3">
+                <h2 ref="emRef" class="w-fit font-serif text-xl font-semibold mb-4">About this book</h2>
+                <p class="text-gray-700 leading-relaxed">{{ book.description }}</p>
+              </div>
+            </div>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="bg-yellow-200 p-4 rounded-lg">
               <div class="flex items-center mb-3">
-                <i class="pi pi-book text-blue-300 mr-2"></i>
-                <h3 class="font-medium text-blue-300 mb-2">Details</h3>
+                <i class="pi pi-book text-orange-400 mr-2"></i>
+                <h3 class="font-medium text-orange-400">Details</h3>
               </div>
               <ul class="space-y-2 text-sm">
                 <li class="flex justify-between">
                   <span class="text-gray-600">Pages</span>
                   <span class="font-medium">{{ book.pages }}</span>
                 </li>
+                <li class="flex justify-between">
+                  <span class="text-gray-600">Language</span>
+                  <span class="font-medium">{{ book.language }}</span>
+                </li>
               </ul>
             </div>
 
             <div class="bg-yellow-100 p-4 rounded-lg">
               <div class="flex items-center mb-3">
-                <i class="pi pi-bookmark text-blue-300 mr-2"></i>
-                <h3 class="font-medium text-blue-300">Reader's Notes</h3>
+                <i class="pi pi-bookmark text-orange-400 mr-2"></i>
+                <h3 class="font-medium text-orange-400">Reader's Notes</h3>
               </div>
               <p class="text-sm text-gray-600 italic">
-                {{ book.description }}
+                <Rating :rating="3" readonly />
               </p>
             </div>
           </div>
@@ -84,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Button, Card, Tag } from 'primevue';
 import { useBookStore } from '@/store/modules/book';
@@ -92,6 +102,8 @@ import { Book } from '@/modals';
 import { useToast } from '@/composables/useToast';
 import NoteModal from '@/components/NoteModal.vue';
 import Rating from '@/components/Rating.vue';
+import { annotate } from 'rough-notation';
+
 const bookStore = useBookStore();
 const router = useRouter();
 const route = useRoute();
@@ -99,6 +111,7 @@ const showModal = ref(false);
 const showNoteModal = ref(false);
 const { showSuccess } = useToast();
 const { id } = route.params;
+const emRef = ref(null);
 
 const book = ref<Book>({
   id: 0,
@@ -133,10 +146,6 @@ const refreshBook = async () => {
   book.value = newBook;
 };
 
-const handleAddNote = () => {
-  showNoteModal.value = true;
-};
-
 const handleCloseNoteModal = () => {
   showNoteModal.value = false;
 };
@@ -149,6 +158,22 @@ watch(
       if (getBookData) {
         book.value = getBookData;
       }
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => book.value.id,
+  async (newId) => {
+    if (newId) {
+      await nextTick();
+      setTimeout(() => {
+        if (emRef.value) {
+          const a1 = annotate(emRef.value, { type: 'underline', color: 'yellow' });
+          a1.show();
+        }
+      }, 1000);
     }
   },
   { immediate: true },

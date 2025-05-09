@@ -13,13 +13,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import Menubar from 'primevue/menubar';
 import InputSwitch from 'primevue/inputswitch';
 import { useTheme } from '@/composables/useTheme';
 import { useRouter } from 'vue-router';
 
-const { isDark, initializeTheme } = useTheme();
+const { isDark } = useTheme();
 const router = useRouter();
 
 const items = ref([
@@ -36,6 +36,14 @@ const items = ref([
 ]);
 
 onMounted(() => {
-  initializeTheme();
+  const storedIsDark = sessionStorage.getItem('isDark');
+  const isDarkValue = storedIsDark === 'true';
+  if (storedIsDark !== null) {
+    isDark.value = isDarkValue;
+  }
+});
+
+watch(isDark, (newValue) => {
+  sessionStorage.setItem('isDark', String(newValue));
 });
 </script>
